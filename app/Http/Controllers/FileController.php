@@ -11,35 +11,35 @@ class FileController extends Controller
     public function uploadFile(Request $request)
     {
         $file = new ParsingController();
-        $fileName = $request->file('file');
+        $files = $request->file('file');
 
         if (!$request->hasFile('file')) {
             return redirect()->back()->withErrors('Файл не был загружен.');
         }
 
-        if (!$fileName->isValid()) {
+        if (!$files->isValid()) {
             return redirect()->back()->withErrors('Ошибка загрузки файла.');
         }
 
-        $path = Storage::putFileAs('public', $request->file('file'), $fileName->getClientOriginalName());
-
+        $path = $request->file('file')->storeAs('public', $files->getClientOriginalName());
+//dd($request, $fileName, $path);
         if ($path) {
-            $file->parsingExcel($path);
+            $file->parsingExcel($files);
         } else {
             return view('welcome', ['file' => $file])->withErrors(['error' => 'ошибка при сохранении файла']);
         }
 
-        $megafiles = Storage::Files('public');
-
-        for ($i = 0; $i < count($megafiles); $i++) {
-            if (!str_contains($megafiles[$i], 'f.xlsx')) {
-                Storage::delete($megafiles[$i]);
-            }
-        }
-
-        return view('welcome', [
-            'files' => Storage::Files('/excel')
-        ])->with('success', 'файл загружен успешно');
+//        $metafiles = Storage::Files('public');
+//
+//        for ($i = 0; $i < count($metafiles); $i++) {
+//            if (!str_contains($metafiles[$i], 'f.xlsx')) {
+//                Storage::delete($metafiles[$i]);
+//            }
+//        }
+//
+//        return view('welcome', [
+//            'files' => Storage::Files('public')
+//        ])->with('success', 'файл загружен успешно');
     }
 
     public function showProcessedFile()

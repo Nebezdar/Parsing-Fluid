@@ -8,15 +8,14 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class ParsingController extends Controller
 {
-    public function parsingExcel($fileName)
+    public function parsingExcel($file)
     {
+//        dd(gettype($files));
+        $excelFile = $file ->store('public');
 
-        $excelFile = $fileName ->store('public');
-//dd(gettype($excelFile));
 
         $reader = IOFactory::createReader('Xlsx');
-        $spreadsheet = $reader->load($excelFile);
-
+        $spreadsheet = $reader->load($file);
 
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -45,7 +44,7 @@ class ParsingController extends Controller
 
 
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($excelFile);
+        $writer->save($file);
 
         return null;
     }
