@@ -18,10 +18,10 @@
 
 <hr>
 <h1>Готовый файл</h1>
-<div>
-    <ul>
-
-    </ul>
+<div style="height: 20px">
+    <form action="/download" method="get" enctype="multipart/form-data">
+    <a style="display: block; width: 50px; height: 50px; ;" href=/download>Скачать файл</a>
+    </form>
 </div>
 </body>
 </html>

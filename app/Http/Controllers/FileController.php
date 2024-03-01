@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+    use http\Env\Response;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Storage;
     use Illuminate\Support\Facades\Validator;
+    use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
@@ -32,28 +34,25 @@ class FileController extends Controller
 //        $metafiles = Storage::Files('public');
 //
 //        for ($i = 0; $i < count($metafiles); $i++) {
-//            if (!str_contains($metafiles[$i], 'f.xlsx')) {
+//            if (!str_contains($metafiles[$i], 'e.xlsx')) {
 //                Storage::delete($metafiles[$i]);
 //            }
 //        }
-//
-//        return view('welcome', [
-//            'files' => Storage::Files('public')
-//        ])->with('success', 'файл загружен успешно');
+
+        return view('welcome', [
+            'files' => Storage::Files('public')
+        ])->with('success', 'файл загружен успешно');
     }
 
-    public function showProcessedFile()
+    public function downloadFile()
     {
 
-        $processedFilePath = public_path('public');
+        $file = storage_path('parsing.xlsx');
+        $headers = ['Content-Type: domains/xlsx'];
+        $newName = 'today-xlsx-file'.time().'xlsx';
 
 
-        if (!file_exists($processedFilePath)) {
-            return 'Обработанный файл не найден.';
-        }
-
-
-        return response()->download($processedFilePath, 'parsing_file.xlsx');
+        return response()->download($file, $newName, $headers);
     }
 }
 

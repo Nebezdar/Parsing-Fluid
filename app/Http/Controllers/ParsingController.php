@@ -10,8 +10,8 @@ class ParsingController extends Controller
 {
     public function parsingExcel($file)
     {
-//        dd(gettype($files));
-        $excelFile = $file ->store('public');
+
+
 
 
         $reader = IOFactory::createReader('Xlsx');
@@ -40,12 +40,14 @@ class ParsingController extends Controller
 
             $sheet->setCellValue('I' . $row, $finalUrl);
             $sheet->setCellValue('J' . $row, $finalStatus);
+
         }
 
-
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($file);
+        $pathName = storage_path() . "/parsing.xlsx";
+//        dd(gettype($pathName));
+        $writer->save($pathName);
 
-        return null;
+        return redirect('/download');
     }
 }

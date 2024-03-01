@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,8 @@ use App\Http\Controllers\FileController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ['files' => Storage::Files('/storage')]);
 });
 
 Route::post('/uploadFile', [FileController::class, 'uploadFile'] );
+Route::get('/download', [FileController::class, 'downloadFile']);
